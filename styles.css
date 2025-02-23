@@ -76,6 +76,120 @@ button:hover {
   color: steelblue;
 }
 
+button:active {
+  background-color: #f0f0f0;
+}
+
+/* REGISTRO */
+#registro {
+  background-color: steelblue;
+  color: white;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 10px 20px;
+}
+
+#registro form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#registro input {
+  margin: 10px;
+  padding: 10px;
+  width: 100%;
+  max-width: 300px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+#registro label {
+  margin: 20px 0 10px;
+  font-size: 1.2rem;
+}
+
+#registro textarea {
+  margin: 10px;
+  padding: 10px;
+  width: 100%;
+  max-width: 300px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+/* REGISTRO */
+
+/* CONSULTA */
+#consulta {
+  width: 100%;
+  height: 100vh;
+  background-color: steelblue;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+#consulta form {
+  margin-top: 60px;
+  display: inline-block;
+  max-width: 500px;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+#consulta h3 {
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
+
+#consulta p {
+  margin-bottom: 30px;
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+#consulta label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+  color: white;
+}
+
+#consulta input {
+  width:400px;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+#consulta button:hover {
+  background-color: #f0f0f0;
+}
+
+@media screen and (max-width: 768px) {
+  #consulta form {
+      width: 95%;
+      padding: 20px;
+  }
+  
+  #consulta h3 {
+      font-size: 1.5rem;
+  }
+  
+  #consulta p {
+      font-size: 1rem;
+  }
+}
+/* CONSULTA */
 footer {
   background-color: #333;
   color: white;

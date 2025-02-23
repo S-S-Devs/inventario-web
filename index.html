@@ -10,21 +10,85 @@
 <body>
     <header>
         <div class="navbar">
-            <img src="/images/Logo.jpg" alt="Logo" class="logo">
+            <img src="images/Logo.jpg" alt="Logo" class="logo">
             <h1>Inventario de Documentos</h1>
         </div>
     </header>
 
-    <main>
+    <main id="Menu">
         <h2>Bienvenido al inventario</h2>
         <div class="menu">
             <button onclick="handleAction('registro')"><i class="fas fa-plus"></i> Registro</button>
             <button onclick="handleAction('consulta')"><i class="fas fa-search"></i> Consulta</button>
             <button onclick="handleAction('modificar')"><i class="fas fa-edit"></i> Modificar</button>
-            <button onclick="handleAction('listar')"><i class="fas fa-list"></i> Listar</button>
+            <button onclick="handleAction('eliminar')"><i class="fas fa-list"></i> Eliminar</button>
             <button onclick="handleAction('salir')"><i class="fas fa-sign-out-alt"></i> Salir</button>
         </div>
     </main>
+
+    <div id="registro" style="display: none;">
+            <h3>Registro de Documentos</h3>
+            <p>Por favor, llena el siguiente formulario para registrar un nuevo documento.</p>
+            <form>
+                <label for="nombre">Nombre del documento:</label>
+                <input type="text" name="nombre" id="nombre">
+                <label for="descripcion">Descripción:</label>
+                <textarea name="descripcion" id="descripcion" cols="30" rows="10"></textarea>
+                <label for="fecha">Fecha de creación:</label>
+                <input type="date" name="fecha" id="fecha">
+                <label for="archivo">Archivo:</label>
+                <input type="file" name="archivo" id="archivo">
+                <div>
+                    <button type="button">Registrar</button>
+                    <button onclick="handleAction('volver')"><i class="fas fa-sign-out-alt"></i> Volver</button>
+                </div>
+            </form>
+    </div> 
+            
+    <div id="consulta" style="display: none;">
+        <form>
+            <h3>Consulta de Documentos</h3>
+            <p>Por favor, ingresa el nombre del documento que deseas consultar.</p>
+            <label for="nombre">Nombre del documento:</label>
+            <input type="text" name="nombre" id="nombre">
+            <div style="text-align: center; display: flex; justify-content: center; gap: 10px;">
+                <button type="button">Consultar</button>
+                <button onclick="handleAction('volver')"><i class="fas fa-sign-out-alt"></i> Volver</button>
+            </div>
+        </form>
+    </div>    
+
+    <div class="Modificar" style="display: none;">
+        <h3>Modificar Documentos</h3>
+        <p>Por favor, ingresa el nombre del documento que deseas modificar.</p>
+        <form action="modificar.php" method="POST">
+            <label for="nombre">Nombre del documento:</label>
+            <input type="text" name="nombre" id="nombre" required>
+            <label for="descripcion">Descripción:</label>
+            <textarea name="descripcion" id="descripcion" cols="30" rows="10" required></textarea>
+            <label for="fecha">Fecha de creación:</label>
+            <input type="date" name="fecha" id="fecha" required>
+            <label for="archivo">Archivo:</label>
+            <input type="file" name="archivo" id="archivo" required>
+            <div>
+                <button type="submit">Modificar</button>
+                <button onclick="handleAction('volver')"><i class="fas fa-sign-out-alt"></i> Volver</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="Eliminar" style="display: none;">
+        <h3>Eliminar Documentos</h3>
+        <p>Por favor, ingresa el nombre del documento que deseas eliminar.</p>
+        <form action="eliminar.php" method="POST">
+            <label for="nombre">Nombre del documento:</label>
+            <input type="text" name="nombre" id="nombre" required>
+            <button type="submit">Eliminar</button>
+            <button onclick="handleAction('volver')"><i class="fas fa-sign-out-alt"></i> Volver</button>
+        </form>
+
+    </div>
+
 
     <footer>
         <p>&copy; 2025 Inventario de Documentos. Todos los derechos reservados.</p>
