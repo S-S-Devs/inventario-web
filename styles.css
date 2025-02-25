@@ -5,6 +5,86 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
+header {
+  width: 100%;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  color: black;
+  padding: 20px 0;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.logo {
+  width: 50px;
+}
+
+h1 {
+  margin: 0;
+  text-align: center;
+  flex-grow: 1;
+  text-transform: uppercase;
+  font-size: 2rem;
+}
+
+footer {
+  width: 100%;
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+}
+
+form {
+  width: 100%;
+  max-width: 500px;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#registro, #consulta, #modificar, #eliminar {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: steelblue;
+  color: white;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  form {
+    width: 90%;
+  }
+
+  button {
+    width: 100%;
+  }
 }
 
 header {
@@ -49,6 +129,12 @@ main {
   justify-content: center;
 }
 
+.boton-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
 button {
   background-color: white;
   box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
@@ -82,19 +168,30 @@ button:active {
 
 /* REGISTRO */
 #registro {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
   background-color: steelblue;
   color: white;
-  display: flex;
-  text-align: center;
-  align-items: center;
-  flex-direction: column;
-  padding: 10px 20px;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 #registro form {
+  width: 100%;
+  max-width: 500px;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: auto;
 }
 
 #registro input {
@@ -119,12 +216,11 @@ button:active {
   border-radius: 5px;
   border: 1px solid #ccc;
 }
-/* REGISTRO */
 
 /* CONSULTA */
 #consulta {
   width: 100%;
-  height: 100vh;
+  height: 82vh;
   background-color: steelblue;
   color: white;
   display: flex;
@@ -189,7 +285,140 @@ button:active {
       font-size: 1rem;
   }
 }
-/* CONSULTA */
+
+/* MODIFICAR */
+#modificar {
+  width: 100%;
+  height: 100vh;
+  background-color: steelblue;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+#modificar form {
+  display: inline-block;
+  max-width: 500px;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 35px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+#modificar h3 {
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
+
+#modificar p {
+  margin-bottom: 30px;
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+#modificar label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+  color: white;
+}
+
+#modificar input,
+#modificar textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+#modificar button {
+  background-color: white;
+  color: black;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 10px;
+}
+
+#modificar button:hover {
+  color: steelblue;
+}
+
+/* ELIMINAR */
+#eliminar {
+  width: 100%;
+  height: 100vh;
+  background-color: steelblue;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+#eliminar form {
+  margin-top: 60px;
+  display: inline-block;
+  max-width: 500px;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+#eliminar h3 {
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
+
+#eliminar p {
+  margin-bottom: 30px;
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+#eliminar label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+  color: white;
+}
+
+#eliminar input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+#eliminar button {
+  background-color: white;
+  color: black;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 10px;
+}
+
+#eliminar button:hover {
+  color: steelblue;
+}
+
+
 footer {
   background-color: #333;
   color: white;
