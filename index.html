@@ -11,18 +11,17 @@
     <header>
         <div class="navbar">
             <img src="images/Logo.jpg" alt="Logo" class="logo">
-            <h1>Inventario de Documentos</h1>
+            <h1>Sistema de gestión de Documentos</h1>
         </div>
     </header>
 
     <main id="Menu">
-        <h2>Bienvenido al inventario</h2>
+        <h2>Bienvenido al Sistema de Gestión para Documentos del Frente Cívico Militar Ezequiel Zamora</h2>
         <div class="menu">
             <button onclick="handleAction('registro')"><i class="fas fa-plus"></i> Registro</button>
             <button onclick="handleAction('consulta')"><i class="fas fa-search"></i> Consulta</button>
             <button onclick="handleAction('modificar')"><i class="fas fa-edit"></i> Modificar</button>
             <button onclick="handleAction('eliminar')"><i class="fas fa-list"></i> Eliminar</button>
-            <button onclick="handleAction('salir')"><i class="fas fa-sign-out-alt"></i> Salir</button>
         </div>
     </main>
 
@@ -86,8 +85,10 @@
                 <label for="fechaNueva">Fecha de creación:</label>
                 <input type="date" name="fecha" id="fechaNueva" readonly><br>
                 <input type="hidden" name="id" id="idDocumento">
-                <button type="button" onclick="modificarDocumento()">Guardar</button>
-                <button type="button" onclick="handleAction('volver')"><i class="fas fa-sign-out-alt"></i> Volver</button>
+                <div class="boton-container">
+                    <button type="button" onclick="modificarDocumento()">Guardar</button>
+                    <button type="button" onclick="handleAction('volver')"><i class="fas fa-sign-out-alt"></i> Volver</button>
+                </div>
             </form>
         </div>
     </div>

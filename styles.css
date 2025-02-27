@@ -27,7 +27,6 @@ header {
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
-  background-color: #333;
 }
 
 .logo {
@@ -136,6 +135,14 @@ input, textarea {
   color: white;
   padding: 20px;
   box-sizing: border-box;
+}
+
+/* Centrar contenido de los módulos */
+#registro > *, 
+#consulta > *, 
+#modificar > *, 
+#eliminar > * {
+  margin-left: 35%;
 }
 
 /* Pie de página */
