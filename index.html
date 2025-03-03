@@ -28,7 +28,7 @@
     <div id="registro" style="display: none;">
         <h3>Registro de Documentos</h3>
         <p>Por favor, llena el siguiente formulario para registrar un nuevo documento.</p>
-        <form id="registroForm">
+        <form action="#" name="" method="post" id="registroForm">
             <label for="nombre">Nombre del documento:</label>
             <input type="text" name="nombre" id="nombre" required>
             <label for="descripcion">Descripción:</label>
@@ -36,85 +36,199 @@
             <label for="fecha">Fecha de creación:</label>
             <input type="date" name="fecha" id="fecha" required>
             <div class="boton-container">
-                <button type="button">Registrar</button>
+                <button type="submit">Registrar</button>
                 <button type="button" onclick="handleAction('volver')"><i class="fas fa-sign-out-alt"></i> Volver</button>
             </div>
         </form>
     </div> 
             
     <div id="consulta" style="display: none;">
-        <form id="consultaForm">
+        <form id="consultaForm" novalidate>
             <h3>Consulta de Documentos</h3>
             <p>Por favor, ingresa el nombre del documento que deseas consultar.</p>
-            <label for="nombreConsulta">Nombre del documento:</label>
-            <input type="text" name="nombre" id="nombreConsulta" required>
+            <div class="form-group">
+                <label for="nombreConsulta" class="form-label">Nombre del documento:</label>
+                <input 
+                    type="text" 
+                    name="nombre" 
+                    id="nombreConsulta" 
+                    class="form-control" 
+                    required
+                    aria-required="true"
+                    aria-label="Nombre del documento a consultar"
+                    placeholder="Ingrese el nombre del documento"
+                >
+            </div>
+    
             <div class="boton-container">
-                <button type="button" onclick="consultarDocumento()">Consultar</button>
-                <button type="button" onclick="handleAction('volver')"><i class="fas fa-sign-out-alt"></i> Volver</button>
+                <button type="button" class="btn btn-primary" onclick="consultarDocumento()">
+                    Consultar
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="handleAction('volver')">
+                    <i class="fas fa-sign-out-alt"></i> Volver
+                </button>
             </div>
         </form>
+    
         <div id="resultadoConsulta" style="display: none;">
             <h3>Resultado de la Consulta</h3>
             <div class="documento">
-                <h4 id="tituloConsulta"></h4>
-                <p id="contenidoConsulta"></p>
-                <p id="fechaConsulta"></p>
-                <button type="button" onclick="handleAction('volver')"><i class="fas fa-sign-out-alt"></i> Volver</button>
+                <h4 id="tituloConsulta" class="documento-titulo"></h4>
+                <p id="contenidoConsulta" class="documento-contenido"></p>
+                <p id="fechaConsulta" class="documento-fecha"></p>
+                <div class="boton-container">
+                    <button type="button" class="btn btn-secondary" onclick="handleAction('volverConsulta')">
+                        <i class="fas fa-sign-out-alt"></i> Volver
+                    </button>
+                </div>
             </div>
         </div>
-    </div>    
+    </div>
 
     <div id="modificar" style="display: none;">
-        <h3>Modificar Documentos</h3>
-        <p>Por favor, ingresa el nombre del documento que deseas modificar.</p>
-        <form id="modificarForm">
-            <label for="nombreModificar">Nombre del documento:</label>
-            <input type="text" name="nombre" id="nombreModificar" required>
+        <form id="modificarForm" novalidate>
+            <h3>Modificar Documentos</h3>
+            <p>Por favor, ingresa el nombre del documento que deseas modificar.</p>
+            
+            <div class="form-group">
+                <label for="nombreModificar" class="form-label">Nombre del documento:</label>
+                <input 
+                    type="text" 
+                    name="nombre" 
+                    id="nombreModificar" 
+                    class="form-control" 
+                    required
+                    aria-required="true"
+                    aria-label="Nombre del documento a modificar"
+                    placeholder="Ingrese el nombre del documento"
+                >
+            </div>
+    
             <div class="boton-container">
-                <button type="button" onclick="buscarModificarDocumento()">Modificar</button>
-                <button type="button" onclick="handleAction('volver')"><i class="fas fa-sign-out-alt"></i> Volver</button>
+                <button type="button" 
+                        class="btn btn-primary" 
+                        onclick="buscarModificarDocumento()">
+                    Modificar
+                </button>
+                <button type="button" 
+                        class="btn btn-secondary"
+                        onclick="handleAction('volver')">
+                    <i class="fas fa-sign-out-alt"></i> Volver
+                </button>
             </div>
         </form>
+    
         <div id="resultadoModificar" style="display: none;">
             <h3>Modificar Documento</h3>
-            <form id="modificarDocumentoForm">
-                <label for="nombreNuevo">Nombre del documento:</label>
-                <input type="text" name="nombre" id="nombreNuevo" readonly><br>
-                <label for="descripcionNueva">Descripción:</label>
-                <textarea name="descripcion" id="descripcionNueva" cols="30" rows="10"></textarea><br>
-                <label for="fechaNueva">Fecha de creación:</label>
-                <input type="date" name="fecha" id="fechaNueva" readonly><br>
+            <form id="modificarDocumentoForm" novalidate>
+                <div class="form-group">
+                    <label for="nombreNuevo" class="form-label">Nombre del documento:</label>
+                    <input 
+                        type="text" 
+                        name="nombre" 
+                        id="nombreNuevo" 
+                        class="form-control" 
+                        readonly
+                        aria-label="Nombre del documento (solo lectura)"
+                    >
+                </div>
+    
+                <div class="form-group">
+                    <label for="descripcionNueva" class="form-label">Descripción:</label>
+                    <textarea 
+                        name="descripcion" 
+                        id="descripcionNueva" 
+                        class="form-control" 
+                        rows="10" 
+                        required
+                        aria-required="true"
+                        aria-label="Descripción del documento"
+                    ></textarea>
+                </div>
+    
+                <div class="form-group">
+                    <label for="fechaNueva" class="form-label">Fecha de creación:</label>
+                    <input 
+                        type="date" 
+                        name="fecha" 
+                        id="fechaNueva" 
+                        class="form-control" 
+                        readonly
+                        aria-label="Fecha de creación del documento"
+                    >
+                </div>
+    
                 <input type="hidden" name="id" id="idDocumento">
+                
                 <div class="boton-container">
-                    <button type="button" onclick="modificarDocumento()">Guardar</button>
-                    <button type="button" onclick="handleAction('volver')"><i class="fas fa-sign-out-alt"></i> Volver</button>
+                    <button type="button" 
+                            class="btn btn-primary"
+                            onclick="modificarDocumento()">
+                        Guardar
+                    </button>
+                    <button type="button" 
+                            class="btn btn-secondary"
+                            onclick="handleAction('volver')">
+                        <i class="fas fa-sign-out-alt"></i> Volver
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 
     <div id="eliminar" style="display: none;">
-        <h3>Eliminar Documentos</h3>
-        <p>Por favor, ingresa el nombre del documento que deseas eliminar.</p>
-        <form id="eliminarForm">
-            <label for="nombreEliminar">Nombre del documento:</label>
-            <input type="text" name="nombre" id="nombreEliminar" required>
+        <form id="eliminarForm" novalidate>
+            <h3>Eliminar Documentos</h3>
+            <p>Por favor, ingresa el nombre del documento que deseas eliminar.</p>
+            <div class="form-group">
+                <label for="nombreEliminar" class="form-label">Nombre del documento:</label>
+                <input 
+                    type="text" 
+                    name="nombre" 
+                    id="nombreEliminar" 
+                    class="form-control" 
+                    required
+                    aria-required="true"
+                    aria-label="Nombre del documento a eliminar"
+                    placeholder="Ingrese el nombre del documento"
+                >
+            </div>
             <div class="boton-container">
-                <button type="button" onclick="buscarEliminarDocumento()">Eliminar</button>
-                <button type="button" onclick="handleAction('volver')"><i class="fas fa-sign-out-alt"></i> Volver</button>
+                <button type="button" 
+                        class="btn btn-danger" 
+                        onclick="buscarEliminarDocumento()">
+                    Eliminar
+                </button>
+                <button type="button" 
+                        class="btn btn-secondary"
+                        onclick="handleAction('volver')">
+                    <i class="fas fa-sign-out-alt"></i> Volver
+                </button>
             </div>
         </form>
+    
         <div id="resultadoEliminar" style="display: none;">
             <h3>Eliminar Documento</h3>
             <div class="documento">
-                <h4 id="tituloEliminar"></h4>
-                <p id="contenidoEliminar"></p>
-                <p id="fechaEliminar"></p>
-                <button type="button" onclick="eliminarDocumento()">Eliminar</button>
-                <button type="button" onclick="handleAction('volver')"><i class="fas fa-sign-out-alt"></i> Volver</button>
+                <h4 id="tituloEliminar" class="documento-titulo"></h4>
+                <p id="contenidoEliminar" class="documento-contenido"></p>
+                <p id="fechaEliminar" class="documento-fecha"></p>
+                <div class="boton-container">
+                    <button type="button" 
+                            class="btn btn-danger"
+                            onclick="eliminarDocumento()">
+                        Eliminar
+                    </button>
+                    <button type="button" 
+                            class="btn btn-secondary"
+                            onclick="handleAction('eliminar')">
+                        <i class="fas fa-sign-out-alt"></i> Volver
+                    </button>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
+</div>
 
     <footer>
         <p>&copy; 2025 Inventario de Documentos. Todos los derechos reservados.</p>

@@ -1,7 +1,3 @@
-// document.addEventListener("DOMContentLoaded", function() {
-//     document.querySelector("#registroForm button[type='button']").addEventListener("click", registrarDocumento);
-// });
-
 function handleAction(action) {
     switch(action) {
         case 'registro':
@@ -11,22 +7,36 @@ function handleAction(action) {
         case 'consulta':
             document.getElementById('Menu').style.display = 'none';
             document.getElementById('consulta').style.display = 'block';
+            document.getElementById('consultaForm').style.display = 'block';
             break;
         case 'modificar':
             document.getElementById('Menu').style.display = 'none';
             document.getElementById('modificar').style.display = 'block';
+            document.getElementById('modificarForm').style.display = 'block';
+            document.getElementById('modificarForm').reset();
             break;
         case 'eliminar':
+            document.getElementById('resultadoEliminar').style.display = 'none';
+            document.getElementById('eliminarForm').reset();
+            document.getElementById('eliminarForm').style.display = 'block';
+            document.getElementById('eliminarForm').reset();
             document.getElementById('Menu').style.display = 'none';
             document.getElementById('eliminar').style.display = 'block';
             break;
         case 'salir':
             window.close();
             break;
+        case 'volverConsulta':
+            document.getElementById('resultadoConsulta').style.display = 'none';
+            document.getElementById('consulta').style.display = 'block';
+            document.getElementById('consultaForm').style.display = 'block';
+            document.getElementById('consultaForm').reset();
+            break;
         case 'volver':
             document.getElementById('Menu').style.display = 'block';
             document.getElementById('registro').style.display = 'none';
             document.getElementById('consulta').style.display = 'none';
+            document.getElementById('consultaForm').reset();
             document.getElementById('modificar').style.display = 'none';
             document.getElementById('eliminar').style.display = 'none';
             document.getElementById('resultadoConsulta').style.display = 'none';
@@ -38,247 +48,226 @@ function handleAction(action) {
     }
 }
 
-function guardarDocumento() {
+// REGISTROS
+function registrarDocumento(event) {
+    event.preventDefault();
     const nombre = document.getElementById('nombre').value;
     const descripcion = document.getElementById('descripcion').value;
     const fecha = document.getElementById('fecha').value;
-
-    const documento = {
+    if (!nombre || !descripcion || !fecha) {
+        alert('Por favor, rellena todos los campos.');
+        return;
+    }
+    const datos = {
         nombre,
         descripcion,
         fecha
     };
-
-    localStorage.setItem(nombre, JSON.stringify(documento));
-    alert('Documento registrado exitosamente!');
-}
-document.querySelector('#registroForm button[type="button"]').onclick = guardarDocumento;
-
-function consultarDocumento() {
-    const nombreConsulta = document.getElementById('nombreConsulta').value;
-    const documento = JSON.parse(localStorage.getItem(nombreConsulta));
-
-    if (documento) {
-        document.getElementById('tituloConsulta').innerText = documento.nombre;
-        document.getElementById('contenidoConsulta').innerText = documento.descripcion;
-        document.getElementById('fechaConsulta').innerText = documento.fecha;
-        document.getElementById('resultadoConsulta').style.display = 'block';
-    } else {
-        alert('Documento no encontrado.');
-    }
-}
-document.querySelector('#consultaForm button[type="button"]').onclick = consultarDocumento;
-
-function buscarModificarDocumento() {
-    const nombreModificar = document.getElementById('nombreModificar').value;
-    const documento = JSON.parse(localStorage.getItem(nombreModificar));
-
-    if (documento) {
-        document.getElementById('nombreNuevo').value = documento.nombre;
-        document.getElementById('descripcionNueva').value = documento.descripcion;
-        document.getElementById('fechaNueva').value = documento.fecha;
-        document.getElementById('idDocumento').value = nombreModificar;
-        document.getElementById('resultadoModificar').style.display = 'block';
-    } else {
-        alert('Documento no encontrado.');
-    }
-}
-
-function modificarDocumento() {
-    const idDocumento = document.getElementById('idDocumento').value;
-    const descripcionNueva = document.getElementById('descripcionNueva').value;
-
-    const documentoModificado = {
-        nombre: idDocumento,
-        descripcion: descripcionNueva,
-        fecha: document.getElementById('fechaNueva').value
+    const opcionesFetch = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: JSON.stringify(datos)
     };
-
-    localStorage.setItem(idDocumento, JSON.stringify(documentoModificado));
-    alert('Documento modificado exitosamente!');
+    fetch('registro.php', opcionesFetch)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Error en la respuesta del servidor: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                alert('Documento registrado exitosamente.');
+                document.getElementById('registroForm').reset();
+            } else {
+                alert('Error al registrar el documento: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Hubo un problema al intentar registrar el documento. Por favor, inténtalo nuevamente.');
+        });
 }
-document.querySelector('#modificarForm button[type="button"]').onclick = buscarModificarDocumento;
-document.querySelector('#modificarDocumentoForm button[type="button"]').onclick = modificarDocumento;
+document.getElementById('registroForm').addEventListener('submit', registrarDocumento);
 
-
-function buscarEliminarDocumento() {
-    const nombreEliminar = document.getElementById('nombreEliminar').value;
-    const documento = JSON.parse(localStorage.getItem(nombreEliminar));
-
-    if (documento) {
-        document.getElementById('tituloEliminar').innerText = documento.nombre;
-        document.getElementById('contenidoEliminar').innerText = documento.descripcion;
-        document.getElementById('fechaEliminar').innerText = documento.fecha;
-        document.getElementById('resultadoEliminar').style.display = 'block';
-    } else {
-        alert('Documento no encontrado.');
+// CONSULTA
+function consultarDocumento() {
+    const nombre = document.getElementById('nombreConsulta').value.trim();
+    if (!nombre) {
+        alert('Por favor, ingresa el nombre del documento.');
+        return;
     }
+    fetch('consulta.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: JSON.stringify({ nombre: nombre })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Error en la respuesta del servidor: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            mostrarResultadoConsulta(data.documento);
+        } else {
+            alert('No se encontró el documento.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Hubo un problema al consultar el documento. Por favor, inténtalo nuevamente.');
+    });
 }
 
+// MODIFICAR
+function buscarModificarDocumento() {
+    const nombre = document.getElementById('nombreModificar').value.trim();
+    if (!nombre) {
+        alert('Por favor, ingresa el nombre del documento.');
+        return;
+    }
+    fetch('modificar.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: JSON.stringify({ nombre: nombre })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Error en la respuesta del servidor: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.error) {
+            alert(data.error);
+            return;
+        }
+        document.getElementById('modificarForm').style.display = 'none';
+        document.getElementById('resultadoModificar').style.display = 'block';
+        document.getElementById('nombreNuevo').value = data.nombre;
+        document.getElementById('descripcionNueva').value = data.descripcion;
+        document.getElementById('fechaNueva').value = data.fecha;
+        document.getElementById('idDocumento').value = data.id;
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Hubo un problema al buscar el documento. Por favor, inténtalo nuevamente.');
+    });
+}
+function modificarDocumento() {
+    const id = document.getElementById('idDocumento').value;
+    const descripcion = document.getElementById('descripcionNueva').value.trim();
+    if (!descripcion) {
+        alert('Por favor, ingresa una descripción.');
+        return;
+    }
+    fetch('modificar.php', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: JSON.stringify({
+            id: id,
+            descripcion: descripcion
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Error en la respuesta del servidor: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            alert('Documento modificado exitosamente.');
+            document.getElementById('modificarForm').style.display = 'block';
+            document.getElementById('resultadoModificar').style.display = 'none';
+            document.getElementById('modificarForm').reset();
+        } else {
+            alert('Error al modificar el documento: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Hubo un problema al modificar el documento. Por favor, inténtalo nuevamente.');
+    });
+}
+// ELIMINAR
+function buscarEliminarDocumento() {
+    const nombre = document.getElementById('nombreEliminar').value.trim();
+    if (!nombre) {
+        alert('Por favor, ingresa el nombre del documento.');
+        return;
+    }
+    fetch('eliminar.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: JSON.stringify({ nombre: nombre })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Error en la respuesta del servidor: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.error) {
+            alert(data.error);
+            return;
+        }
+        document.getElementById('eliminarForm').style.display = 'none';
+        document.getElementById('resultadoEliminar').style.display = 'block';
+        document.getElementById('tituloEliminar').textContent = data.nombre;
+        document.getElementById('contenidoEliminar').innerHTML = 
+            data.descripcion.replace(/\n/g, '<br>');
+        document.getElementById('fechaEliminar').textContent = data.fecha;
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Hubo un problema al buscar el documento. Por favor, inténtalo nuevamente.');
+    });
+}
 function eliminarDocumento() {
-    const nombreEliminar = document.getElementById('tituloEliminar').innerText;
-    localStorage.removeItem(nombreEliminar);
-    alert('Documento eliminado exitosamente!');
+    const confirmacion = confirm('¿Estás seguro de que deseas eliminar este documento? Esta acción no se puede deshacer.');
+    if (!confirmacion) return;
+    const nombre = document.getElementById('nombreEliminar').value;
+    const descripcion = document.getElementById('contenidoEliminar').textContent;
+    fetch('eliminar.php', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: JSON.stringify({
+            nombre: nombre,
+            descripcion: descripcion
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Error en la respuesta del servidor: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            alert('Documento eliminado exitosamente.');
+            handleAction('volver');
+        } else {
+            alert('Error al eliminar el documento: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Hubo un problema al eliminar el documento. Por favor, inténtalo nuevamente.');
+    });
 }
-document.querySelector('#eliminarForm button[type="button"]').onclick = buscarEliminarDocumento;
-document.querySelector('#resultadoEliminar button[type="button"]').onclick = eliminarDocumento;
-
-
-
-
-
-
-
-// function registrarDocumento() {
-//     const nombre = document.getElementById('nombre').value;
-//     const descripcion = document.getElementById('descripcion').value;
-//     const fecha = document.getElementById('fecha').value;
-
-//     if (!nombre || !descripcion || !fecha) {
-//         alert('Por favor, rellena todos los campos.');
-//         return;
-//     }
-
-//     fetch('registro.php', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/x-www-form-urlencoded'
-//         },
-//         body: `nombre=${nombre}&descripcion=${descripcion}&fecha=${fecha}`
-//     })
-//     .then(response => response.text())
-//     .then(data => {
-//         if (data.includes("Documento registrado con éxito")) {
-//             alert('Documento registrado exitosamente.');
-//             document.getElementById('registroForm').reset();
-//         } else {
-//             alert('Error al registrar el documento.');
-//         }
-//     })
-//     .catch(error => {
-//         console.error('Error:', error);
-//     });
-// }
-
-// function consultarDocumento() {
-//     const nombre = document.getElementById('nombreConsulta').value;
-
-//     fetch('consulta.php', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/x-www-form-urlencoded'
-//         },
-//         body: `nombre=${nombre}`
-//     })
-//     .then(response => response.json())
-//     .then(data => {
-//         if (data.error) {
-//             alert(data.error);
-//         } else {
-//             document.getElementById('consultaForm').style.display = 'none';
-//             document.getElementById('resultadoConsulta').style.display = 'block';
-//             document.getElementById('tituloConsulta').innerText = `Nombre: ${data.nombre}`;
-//             document.getElementById('contenidoConsulta').innerText = `Descripción: ${data.descripcion}`;
-//             document.getElementById('fechaConsulta').innerText = `Fecha de creación: ${data.fecha}`;
-//         }
-//     })
-//     .catch(error => {
-//         console.error('Error:', error);
-//     });
-// }
-
-// function buscarModificarDocumento() {
-//     const nombre = document.getElementById('nombreModificar').value;
-
-//     fetch('modificar.php', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/x-www-form-urlencoded'
-//         },
-//         body: `nombre=${nombre}`
-//     })
-//     .then(response => response.json())
-//     .then(data => {
-//         if (data.error) {
-//             alert(data.error);
-//         } else {
-//             document.getElementById('modificarForm').style.display = 'none';
-//             document.getElementById('resultadoModificar').style.display = 'block';
-//             document.getElementById('nombreNuevo').value = data.nombre;
-//             document.getElementById('descripcionNueva').value = data.descripcion;
-//             document.getElementById('fechaNueva').value = data.fecha;
-//             document.getElementById('idDocumento').value = data.id;
-//         }
-//     })
-//     .catch(error => {
-//         console.error('Error:', error);
-//     });
-// }
-
-// function modificarDocumento() {
-//     const id = document.getElementById('idDocumento').value;
-//     const descripcion = document.getElementById('descripcionNueva').value;
-
-//     fetch('modificar.php', {
-//         method: 'PUT',
-//         headers: {
-//             'Content-Type': 'application/x-www-form-urlencoded'
-//         },
-//         body: `id=${id}&descripcion=${descripcion}`
-//     })
-//     .then(response => response.text())
-//     .then(data => {
-//         alert(data);
-//         handleAction('volver');
-//     })
-//     .catch(error => {
-//         console.error('Error:', error);
-//     });
-// }
-
-// function buscarEliminarDocumento() {
-//     const nombre = document.getElementById('nombreEliminar').value;
-
-//     fetch('eliminar.php', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/x-www-form-urlencoded'
-//         },
-//         body: `nombre=${nombre}`
-//     })
-//     .then(response => response.json())
-//     .then(data => {
-//         if (data.error) {
-//             alert(data.error);
-//         } else {
-//             document.getElementById('eliminarForm').style.display = 'none';
-//             document.getElementById('resultadoEliminar').style.display = 'block';
-//             document.getElementById('tituloEliminar').innerText = `Nombre: ${data.nombre}`;
-//             document.getElementById('contenidoEliminar').innerText = `Descripción: ${data.descripcion}`;
-//             document.getElementById('fechaEliminar').innerText = `Fecha de creación: ${data.fecha}`;
-//         }
-//     })
-//     .catch(error => {
-//         console.error('Error:', error);
-//     });
-// }
-
-// function eliminarDocumento() {
-//     const nombre = document.getElementById('nombreEliminar').value;
-
-//     fetch('eliminar.php', {
-//         method: 'DELETE',
-//         headers: {
-//             'Content-Type': 'application/x-www-form-urlencoded'
-//         },
-//         body: `nombre=${nombre}`
-//     })
-//     .then(response => response.text())
-//     .then(data => {
-//         alert(data);
-//         handleAction('volver');
-//     })
-//     .catch(error => {
-//         console.error('Error:', error);
-//     });
-// }
