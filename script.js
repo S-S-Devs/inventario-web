@@ -70,7 +70,7 @@ function registrarDocumento(event) {
         },
         body: JSON.stringify(datos)
     };
-    fetch('registro.php', opcionesFetch)
+    fetch('http://localhost/inventario-web/registro.php', opcionesFetch)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Error en la respuesta del servidor: ${response.status}`);
@@ -99,7 +99,7 @@ function consultarDocumento() {
         alert('Por favor, ingresa el nombre del documento.');
         return;
     }
-    fetch('consulta.php', {
+    fetch('http://localhost/inventario-web/consulta.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json; charset=UTF-8'
@@ -125,6 +125,14 @@ function consultarDocumento() {
     });
 }
 
+function mostrarResultadoConsulta(documento) {
+    document.getElementById('consultaForm').style.display = 'none';
+    document.getElementById('resultadoConsulta').style.display = 'block';
+    document.getElementById('tituloConsulta').textContent = documento.nombre;
+    document.getElementById('contenidoConsulta').textContent = documento.descripcion;
+    document.getElementById('fechaConsulta').textContent = documento.fecha;
+}
+
 // MODIFICAR
 function buscarModificarDocumento() {
     const nombre = document.getElementById('nombreModificar').value.trim();
@@ -132,7 +140,7 @@ function buscarModificarDocumento() {
         alert('Por favor, ingresa el nombre del documento.');
         return;
     }
-    fetch('modificar.php', {
+    fetch('http://localhost/inventario-web/modificar.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json; charset=UTF-8'
@@ -169,7 +177,7 @@ function modificarDocumento() {
         alert('Por favor, ingresa una descripción.');
         return;
     }
-    fetch('modificar.php', {
+    fetch('http://localhost/inventario-web/modificar.php', {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json; charset=UTF-8'
@@ -200,6 +208,7 @@ function modificarDocumento() {
         alert('Hubo un problema al modificar el documento. Por favor, inténtalo nuevamente.');
     });
 }
+
 // ELIMINAR
 function buscarEliminarDocumento() {
     const nombre = document.getElementById('nombreEliminar').value.trim();
@@ -207,7 +216,7 @@ function buscarEliminarDocumento() {
         alert('Por favor, ingresa el nombre del documento.');
         return;
     }
-    fetch('eliminar.php', {
+    fetch('http://localhost/inventario-web/eliminar.php', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json; charset=UTF-8'
@@ -242,7 +251,7 @@ function eliminarDocumento() {
     if (!confirmacion) return;
     const nombre = document.getElementById('nombreEliminar').value;
     const descripcion = document.getElementById('contenidoEliminar').textContent;
-    fetch('eliminar.php', {
+    fetch('http://localhost/inventario-web/eliminar.php', {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json; charset=UTF-8'
